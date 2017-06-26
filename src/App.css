@@ -1,0 +1,14 @@
+.app {
+
+}
+
+.scroller {
+  margin: 0 auto;
+  height: 300px;
+  width: 300px;
+  overflow: auto;
+}
+
+.item {
+  height: 200px;
+}
