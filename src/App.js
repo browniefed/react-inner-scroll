@@ -2,13 +2,7 @@ import React, { Component } from 'react';
 import ScrollView, { ScrollElement } from "./scroller";
 import './App.css';
 
-const items = [
-  "Jason",
-  "Joel",
-  "John",
-  "Jake",
-  "Jordan"
-]
+import items from "./data";
 
 class App extends Component {
 
@@ -17,17 +11,18 @@ class App extends Component {
   }
   render() {
     return (
-      <div>
+      <div className="app">
         {
-          items.map((name) => <button onClick={() => this.scrollTo(name)}>{name}</button>)
+          items.map(({name}) => <button onClick={() => this.scrollTo(name)}>{name}</button>)
         }
         <ScrollView ref={(scroller) => this._scroller = scroller}>
           <div className="scroller">
             {
-              items.map((name) => {
+              items.map(({name, image}) => {
                 return (
                   <ScrollElement name={name}>
                     <div className="item">
+                      <img src={image} />
                       {name}
                     </div>
                   </ScrollElement>

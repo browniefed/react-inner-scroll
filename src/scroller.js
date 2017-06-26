@@ -1,50 +1,49 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import { findDOMNode } from "react-dom";
 import PropTypes from "prop-types";
 import scrollIntoView from "scroll-into-view";
 
 class ScrollView extends Component {
-  
-  constructor(props) {
-    super(props);
-    this.elements = {}
-  }
+  static childContextTypes = {
+    scroll: PropTypes.object,
+  };
+  elements = {};
 
   register = (name, ref) => {
     this.elements[name] = ref;
-  }
-  unregister = (name) => {
+  };
+  unregister = name => {
     delete this.elements[name];
-  }
+  };
 
   getChildContext() {
     return {
       scroll: {
         register: this.register,
         unregister: this.unregister,
-      }
-    }
+      },
+    };
   }
 
   scrollTo(name) {
     const node = findDOMNode(this.elements[name]);
     scrollIntoView(node, {
       time: 500,
-    })
+      align: {
+        top: 0,
+      },
+    });
   }
 
   render() {
-    return (
-      React.Children.only(this.props.children)
-    );
+    return React.Children.only(this.props.children);
   }
 }
 
-ScrollView.childContextTypes = {
-  scroll: PropTypes.object
-};
-
 class ScrollElement extends Component {
+  static contextTypes = {
+    scroll: PropTypes.object,
+  };
   componentDidMount() {
     this.context.scroll.register(this.props.name, this._ref);
   }
@@ -55,16 +54,10 @@ class ScrollElement extends Component {
 
   render() {
     return React.cloneElement(this.props.children, {
-      ref: (ref) => this._ref = ref,
-    })
+      ref: ref => (this._ref = ref),
+    });
   }
 }
 
-ScrollElement.contextTypes = {
-  scroll: PropTypes.object,
-}
-
-export { 
-  ScrollElement
-}
+export { ScrollElement };
 export default ScrollView;
